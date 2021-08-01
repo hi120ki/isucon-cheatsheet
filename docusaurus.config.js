@@ -97,6 +97,10 @@ module.exports = {
       theme: lightCodeTheme,
       darkTheme: darkCodeTheme,
     },
+    gtag: {
+      trackingID: 'G-CE9KCQ08HW',
+      anonymizeIP: true,
+    },
   },
   presets: [
     [
