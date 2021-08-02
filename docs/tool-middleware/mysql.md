@@ -26,37 +26,22 @@ rm mysql-apt-config_0.8.15-1_all.deb ; mysql --version
 ## Command
 
 MySQL ログインコマンド
-
 ```
 mysql -u root -p...
 ```
-
-サービス起動 start/stop/reload
-
+サービス起動 `start` `stop` `reload` `restart`
 ```
 sudo systemctl start mysql
 ```
-
-設定変更後の再起動
-
-```
-sudo systemctl restart mysql
-```
-
-サービス自動起動 enable/disable
-
+サービス自動起動 `enable` `disable`
 ```
 sudo systemctl enable mysql
 ```
-
 サービスステータス表示
-
 ```
 sudo systemctl status mysql
 ```
-
 ログ表示
-
 ```
 sudo journalctl -u mysql
 ```
@@ -102,21 +87,29 @@ sudo systemctl restart mysql
 > mysql -uroot -p -e 'SHOW variables LIKE "%max_connections%";'
 > ```
 
-## Slow query
+## Slow query log
 
-```
+### File
+
+```js title="/etc/mysql/my.cnf"
 [mysqld]
 slow_query_log = 1
 slow_query_log_file = "/tmp/slow-query.log"
 long_query_time = 0
 ```
 
+### Command
+
+Enable logging
 ```
 mysql -uroot -p -e \
   "set global slow_query_log_file = '/tmp/slow-query.log';\
   set global long_query_time = 0;\
   set global slow_query_log = ON;"
+```
 
+Disable logging
+```
 mysql -uroot -p -e \
   "set global slow_query_log = OFF;"
 ```

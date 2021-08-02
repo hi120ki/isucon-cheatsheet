@@ -27,21 +27,21 @@ sudo systemctl restart redis-server
 
 ## Command
 
-サービス起動 start/stop/reload
+サービス起動 `start` `stop` `reload` `restart`
 ```
-$ sudo systemctl start redis-server
+sudo systemctl start redis-server
 ```
-サービス自動起動 enable/disable
+サービス自動起動 `enable` `disable`
 ```
-$ sudo systemctl enable redis-server
+sudo systemctl enable redis-server
 ```
 サービスステータス表示
 ```
-$ sudo systemctl status redis-server
+sudo systemctl status redis-server
 ```
 ログ表示
 ```
-$ sudo journalctl -u redis-server
+sudo journalctl -u redis-server
 ```
 
 ## Library - Golang

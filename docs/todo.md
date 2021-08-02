@@ -115,17 +115,19 @@ make db-conf
 ### MySQL の LimitNOFILE 編集
 
 ```
-$ sudo systemctl status mysql
-$ sudo nano /lib/systemd/system/mysql.service
+sudo systemctl status mysql
+```
+```
+sudo nano /lib/systemd/system/mysql.service
 ```
 
-```
+```js title="/lib/systemd/system/mysql.service"
 [Service]
 LimitNOFILE = 65535
 ```
 
 ```
-$ sudo systemctl daemon-reload ; sudo systemctl restart mysql
+sudo systemctl daemon-reload ; sudo systemctl restart mysql
 ```
 
 ### 計測

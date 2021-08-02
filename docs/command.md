@@ -47,5 +47,16 @@ git config --global user.name "isucon" ; git config --global user.email "isucon@
 curl https://github.com/hi120ki.keys >> ~/.ssh/authorized_keys
 ```
 ```
-ssh-keygen -t ed25519 ; cat ~/.ssh/id_ed25519.pub
+ssh-keygen -t ed25519 -N "" -f ~/.ssh/id_ed25519 1>/dev/null ; cat ~/.ssh/id_ed25519.pub
+```
+
+## Systemctl
+
+サービス一覧
+```
+sudo systemctl list-unit-files --type=service
+```
+設定ファイルの再読み込み
+```
+sudo systemctl daemon-reload
 ```
