@@ -10,6 +10,7 @@ sidebar_position: 1
 
 ```
 bash <(curl -Ss https://my-netdata.io/kickstart.sh) --non-interactive
+sudo sed -i.bk -e 's/bind to = localhost/bind to = 0.0.0.0/g' /etc/netdata/netdata.conf
 ```
 
 <http://localhost:19999/>

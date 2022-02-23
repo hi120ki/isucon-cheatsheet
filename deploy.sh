@@ -6,10 +6,10 @@ cp -r ~/src/github.com/hi120ki/isucon-cheatsheet/build/ ~/src/github.com/hi120ki
 
 cd ~/src/github.com/hi120ki/hi120ki.github.io/isucon/
 
-git checkout master
+git checkout main
 
 git add -A
 
 git commit -m "deploy"
 
-git push origin master
+git push origin main
