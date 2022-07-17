@@ -104,7 +104,7 @@ sudo systemctl restart nginx
 
 ### pprof を main.go に追加
 
-import 内
+`import`
 
 ```go
 	"runtime"
