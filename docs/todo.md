@@ -9,7 +9,7 @@ sidebar_position: 3
 ## 開始前
 
 - GitHub レポジトリを作っておく
-- slackcat の API key を取っておく
+- slackcat の Key を取っておく <http://slackcat.chat/configure>
 
 ## 開始直後
 
@@ -37,15 +37,21 @@ Host isucon-server
 
 ### 自作 Makefile 投入
 
-変数を編集
+Makefile の各種変数を編集
+
+セットアップを流す
 
 ```
-make setup
+make setup-init
 ```
 
 表示された公開鍵を GitHub の deploy key に登録(write access 付きで)
 
 ### GitHub にコードをアップ
+
+```
+touch .gitignore
+```
 
 ```
 git init
@@ -63,6 +69,10 @@ git push -u origin master
 ### nginx.conf 編集
 
 ```
+sudo cp /etc/nginx/nginx.conf nginx.conf
+```
+
+```
     log_format ltsv "time:$time_local"
                     "\thost:$remote_addr"
                     "\tforwardedfor:$http_x_forwarded_for"
@@ -77,39 +87,51 @@ git push -u origin master
                     "\tvhost:$host"
                     "\tmethod:$request_method"
                     "\turi:$request_uri";
+```
 
+```
     # access_log off;
     access_log  /var/log/nginx/access.log  ltsv;
 ```
 
 ```
 sudo cp nginx.conf /etc/nginx/nginx.conf
+```
+
+```
 sudo systemctl restart nginx
 ```
 
 ### pprof を main.go に追加
 
-```go
-import _ "net/http/pprof"
+import 内
 
-func main() {
+```go
+	"runtime"
+	_ "net/http/pprof"
+```
+
+main 関数の先頭
+
+```go
 	runtime.SetBlockProfileRate(1)
 	go func() {
 		fmt.Println(http.ListenAndServe("0.0.0.0:6060", nil))
 	}()
-}
 ```
 
-### 解析ツールのインストール
+### 解析ツールのインストール・カーネルパラメータ・MySQL 設定の変更
 
 ```
-make i-tool
+make setup-tool
 ```
 
-### MySQL 設定の変更
+```
+make setup-kernel
+```
 
 ```
-make db-conf
+make setup-db-conf
 ```
 
 ### MySQL の LimitNOFILE 編集
@@ -117,13 +139,14 @@ make db-conf
 ```
 sudo systemctl status mysql
 ```
+
 ```
 sudo nano /lib/systemd/system/mysql.service
 ```
 
 ```js title="/lib/systemd/system/mysql.service"
-[Service]
-LimitNOFILE = 65535
+[Service];
+LimitNOFILE = 65535;
 ```
 
 ```
@@ -133,27 +156,18 @@ sudo systemctl daemon-reload ; sudo systemctl restart mysql
 ### 計測
 
 ```
-make ins-pre
+make pre
 ```
 
 ベンチマーク実行
 
 ```
-make pprof
-```
-
-ベンチマーク終了
-
-```
-make ins-nginx
-make ins-slow
+make post
 ```
 
 スコアを git tag に記録する
 
-netdata でどのリソースが専有されているか確認
-
-<http://0.0.0.0:19999>
+netdata でどのリソースが専有されているか確認 <http://0.0.0.0:19999>
 
 ### deploy.sh の作成
 
@@ -192,17 +206,17 @@ sudo systemctl start isu-payment
 
 ## 終了直前
 
-- [ ] nginx logging off
+- [ ] `cat /etc/nginx/nginx.conf` logging off
 
-- [ ] systemctl status nginx > enable
+- [ ] `sudo systemctl status nginx` > enabled
 
 - [ ] mysql logging off
 
-- [ ] systemctl status mysql > enable
+- [ ] `sudo systemctl status mysql` > enabled
 
 - [ ] delete ~/logs/
 
-- [ ] netdata systemctl stop&disable
+- [ ] `sudo systemctl status netdata` > stop & disable
 
 - [ ] delete pprof
 
